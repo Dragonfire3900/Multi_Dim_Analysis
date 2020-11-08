@@ -39,6 +39,22 @@ void readFile(TString inFile, vector<vector<double>>& DataArray, char delim) {
     }
 }
 
+// std::ostream& operator<< (std::ostream& out, const TVectorT<double>& v) {
+//     out << "< ";
+
+//     size_t last = v.GetNrows() - 1;
+
+//     for (size_t i = 0; i < v.GetNrows(); i++) {
+//         out << v.;
+
+//         if (i != last) {
+//             out << ", ";
+//         }
+//     }
+
+//     out << " >";
+// }
+
 template <typename T>
 std::ostream& operator<<(std::ostream& out, std::vector<std::vector<T>>& v) {
     out << "[ ";
@@ -86,4 +102,9 @@ int main(int argc, char *argv[]) {
         }
         test -> AddRow(x);
     }
+
+    *(test -> GetRow(1));
+
+    // std::cout << *test -> GetEigenValues() << endl;
+    test -> GetEigenValues() -> Print();
 }
