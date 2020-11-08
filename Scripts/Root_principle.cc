@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void readFile(TString inFile, vector<vector<double>> DataArray, char delim) {
+void readFile(TString inFile, vector<vector<double>>& DataArray, char delim) {
     DataArray.clear();
 
     ifstream fileIn;
@@ -21,10 +21,13 @@ void readFile(TString inFile, vector<vector<double>> DataArray, char delim) {
     fileIn.open(inFile.Data());
 
 
-    while (fileIn >> temp) {
-        row.clear();
+    while (!fileIn.eof()) {
 
         getline(fileIn, line);
+
+        // std::cout << "Success" << std::endl;
+
+        row.clear();
 
         stringstream s(line);
 
@@ -36,11 +39,32 @@ void readFile(TString inFile, vector<vector<double>> DataArray, char delim) {
     }
 }
 
-std::ostream& operator<<(std::ostream &out, std::vector<std::vector<double>> const&v) {
-    for (auto &&i: v) {
-        for (auto &&j : i) out << j << " ";
-        out << std::endl;
+template <typename T>
+std::ostream& operator<<(std::ostream& out, std::vector<std::vector<T>>& v) {
+    out << "[ ";
+
+    size_t row_last = v.size() - 1;
+
+    for (size_t i = 0; i < v.size(); i++) {
+        size_t col_last = v[i].size() - 1;
+
+        if (i != 0) {
+            out << "  ";
+        }
+        
+        for (size_t j = 0; j < v[i].size(); j++) {
+            out << v[i][j];
+            if (j != col_last) {
+                out << ", ";
+            }
+        }
+
+        if (i != row_last) {
+            out << std::endl;
+        }
     }
+
+    out << " ]";
 }
 
 void usage() {
@@ -48,12 +72,18 @@ void usage() {
 }
 
 int main(int argc, char *argv[]) {
-    TString* testFile = new TString("/home/dragon/Research/LJ/MDA/Source_Data/inputs/DYB_ImprovedDE.txt");
-    char* delim = " ";
+    TString* testFile = new TString("../Source_Data/inputs/DYB_ImprovedDE.txt");
     vector<vector<double>> Data;
 
-    readFile(*testFile, Data, *delim);
+    readFile(*testFile, Data, *" ");
 
-    std::cout << "Success" << std::endl;
-    // std::cout << Data << std::endl;
+    TPrincipal* test = new TPrincipal();
+    
+    for (size_t i = 0; i < Data.size(); i++) {
+        Double_t x[Data[i].size()];
+        for (size_t j = 0; j < Data[i].size(); j++) {
+            x[j] = Data[i][j];
+        }
+        test -> AddRow(x);
+    }
 }
