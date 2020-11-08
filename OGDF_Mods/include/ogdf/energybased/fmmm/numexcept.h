@@ -81,7 +81,7 @@ protected:
 	//! Returns the repulsing force_function_value of scalar d.
 	static double f_rep_scalar(double d) {
 		OGDF_ASSERT(d != 0);
-		return 1/d;
+		return 1/(d * d * d);
 	}
 };
 

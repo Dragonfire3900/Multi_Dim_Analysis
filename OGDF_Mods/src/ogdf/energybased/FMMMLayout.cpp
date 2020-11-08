@@ -1253,7 +1253,7 @@ double FMMMLayout::f_attr_scalar(double d, double ind_ideal_edge_length)
 
 	switch (forceModel()) {
 	case FMMMOptions::ForceModel::FruchtermanReingold:
-		s =  d*d/(ind_ideal_edge_length*ind_ideal_edge_length*ind_ideal_edge_length);
+		s =  d*std::log10(d)/(ind_ideal_edge_length);
 		break;
 	case FMMMOptions::ForceModel::Eades:
 		{
