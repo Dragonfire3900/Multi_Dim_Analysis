@@ -11,26 +11,35 @@
 
 using namespace std;
 
-template <size_t rows, size_t cols>
+void readFile(TString inFile, vector<vector<double>> DataArray, char delim) {
+    DataArray.clear();
 
-void readFile(TString inFile, double (&DataArray)[rows][cols]) {
-    double x;
-    string lineA;
     ifstream fileIn;
-    fileIn.open(inFile.Data());
-    int columnsA, RowsA;
-    RowsA = 0;
+    string value, line, temp;
+    vector<double> row;
 
-    while(fileIn.good()) {
-        while(getline(fileIn, lineA)){
-            istringstream streamA(lineA);
-            columnsA = 0;
-            while(streamA >>x){
-                DataArray[RowsA][columnsA] = x;
-                columnsA++;
-            }
-        RowsA++;
+    fileIn.open(inFile.Data());
+
+
+    while (fileIn >> temp) {
+        row.clear();
+
+        getline(fileIn, line);
+
+        stringstream s(line);
+
+        while(getline(s, value, delim)) {
+            row.push_back(stof(value));
         }
+
+        DataArray.push_back(row);
+    }
+}
+
+std::ostream& operator<<(std::ostream &out, std::vector<std::vector<double>> const&v) {
+    for (auto &&i: v) {
+        for (auto &&j : i) out << j << " ";
+        out << std::endl;
     }
 }
 
@@ -39,5 +48,12 @@ void usage() {
 }
 
 int main(int argc, char *argv[]) {
-    
+    TString* testFile = new TString("/home/dragon/Research/LJ/MDA/Source_Data/inputs/DYB_ImprovedDE.txt");
+    char* delim = " ";
+    vector<vector<double>> Data;
+
+    readFile(*testFile, Data, *delim);
+
+    std::cout << "Success" << std::endl;
+    // std::cout << Data << std::endl;
 }
